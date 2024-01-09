@@ -18,7 +18,7 @@ public class InventoryController {
         return service.saveInventory(inventory);
     }
 
-    @PutMapping("/Inventory")
+    @PutMapping("/inventory")
     public Inventory updateInventory(@RequestBody Inventory inventory) {
         return service.upsert(inventory);
     }
@@ -38,7 +38,11 @@ public class InventoryController {
         return service.deleteInventory(id);
     }
 
-    public String addInventory(int bookId, String bookName, Inventory inventory, Inventory inventory1) {
-        return null;
+    @GetMapping("/reports/inventory")
+    public void getAllInventoryDetails(HttpServletResponse servletResponse) throws IOException {
+        servletResponse.setContentType("text/csv");
+        servletResponse.addHeader("Content-Disposition", "attachment; filename=\"inventory.csv\"");
+        service.writeInventorytocsv(servletResponse.getWriter());
     }
+
 }

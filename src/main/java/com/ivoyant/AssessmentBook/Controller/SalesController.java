@@ -18,7 +18,7 @@ public class SalesController {
         return service.saveSales(sales);
     }
 
-    @PutMapping("/Sale")
+    @PutMapping("/sale")
     public Sales updateSales(@RequestBody Sales sales) {
         return service.upsert(sales);
     }
@@ -38,7 +38,13 @@ public class SalesController {
         return service.deleteSales(id);
     }
 
-    public String addSales(int id, int amount, Sales sales, Sales sales1) {
-        return null;
+    @GetMapping("/reports/sales")
+    public void getAllSalesDetails(HttpServletResponse servletResponse) throws IOException {
+        servletResponse.setContentType("text/csv");
+        servletResponse.addHeader("Content-Disposition", "attachment; filename=\"sales.csv\"");
+        service.writeSalestocsv(servletResponse.getWriter());
     }
+
+
+
 }

@@ -18,7 +18,7 @@ public class CustomerController {
         return service.saveCustomer(customer);
     }
 
-    @PutMapping("/Customer")
+    @PutMapping("/customer")
     public Customer updateCustomer(@RequestBody Customer customer) {
         return service.upsert(customer);
     }
@@ -38,7 +38,13 @@ public class CustomerController {
         return service.deleteCustomer(id);
     }
 
-    public Customer addCustomer(int id, String name, Customer customer, Customer customer1) {
-        return null;
+    @GetMapping("/reports/customers")
+    public void getAllCustomerDetails(HttpServletResponse servletResponse) throws IOException {
+        servletResponse.setContentType("text/csv");
+        servletResponse.addHeader("Content-Disposition", "attachment; filename=\"customer.csv\"");
+        service.writeCustomertocsv(servletResponse.getWriter());
     }
+
+
+
 }

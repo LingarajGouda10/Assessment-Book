@@ -34,5 +34,17 @@ public class InventoryService {
         return "inventory deleted !" + id;
     }
 
+    public void writeInventorytocsv(PrintWriter writer) {
+        List<Inventory> inventories = inventoryRepository.findAll();
+        try (CSVPrinter csvPrinter = new CSVPrinter(writer, CSVFormat.DEFAULT)) {
+            csvPrinter.printRecord("bookId", "quantity", "bookName", "publisher");
+            for (Inventory inventory : inventories) {
+                csvPrinter.printRecord(inventory.getBookId(), inventory.getQuantity(), inventory.getBookName(),
+                        inventory.getPublisher());
+            }
+        } catch (IOException e) {
+            System.out.println("Error While Writing csv" + e);
+        }
+
 
 }
