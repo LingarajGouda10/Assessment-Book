@@ -18,7 +18,7 @@ public class BookController {
         return service.saveBook(book);
     }
 
-    @PutMapping("/Book")
+    @PutMapping("/book")
     public Book updateBook(@RequestBody Book book){
         return service.upsert(book);
     }
@@ -33,12 +33,16 @@ public class BookController {
         return  service.getBookById(id);
     }
 
-    @DeleteMapping("/Book/{id}")
+    @DeleteMapping("/book/{id}")
     public String deleteBook(@PathVariable int id){
         return service.deleteBook(id);
     }
 
-    public Book addBook(int id, String title, int price, Book book, Book book1) {
-        return null;
+    @GetMapping("/reports/books")
+    public void getAllBookDetails(HttpServletResponse servletResponse) throws IOException {
+        servletResponse.setContentType("text/csv");
+        servletResponse.addHeader("Content-Disposition", "attachment; filename=\"book.csv\"");
+        service.writeBooktocsv(servletResponse.getWriter());
     }
+
 }

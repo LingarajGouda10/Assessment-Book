@@ -34,4 +34,16 @@ public class SalesService {
         salesRepository.deleteById(id);
         return "sales deleted !" + id;
     }
+
+    public void writeSalestocsv(PrintWriter writer) {
+        List<Sales> sales = salesRepository.findAll();
+        try (CSVPrinter csvPrinter = new CSVPrinter(writer, CSVFormat.DEFAULT)) {
+            csvPrinter.printRecord("Id", "Amount", "NoOfTransaction", "PaymentType");
+            for (Sales sales1 : sales) {
+                csvPrinter.printRecord(sales1.getId(), sales1.getAmount(), sales1.getNoOfTransaction(),
+                        sales1.getPaymentType());
+            }
+        } catch (IOException e) {
+            System.out.println("Error While Writing csv" + e);
+        }
 }

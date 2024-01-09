@@ -34,5 +34,17 @@ public class BookService {
         return "product removed !" + id;
     }
 
+    public void writeBooktocsv(PrintWriter writer) {
+        List<Book> books = bookRepository.findAll();
+        try (CSVPrinter csvPrinter = new CSVPrinter(writer, CSVFormat.DEFAULT)) {
+            csvPrinter.printRecord("ID", "Title", "Author", "Genre", "Date", "Price");
+            for (Book book : books) {
+                csvPrinter.printRecord(book.getId(), book.getTitle(), book.getAuthor(), book.getGenre(), book.getDate()
+                        , book.getPrice());
+            }
+        } catch (IOException e) {
+            System.out.println("Error While Writing csv" + e);
+        }
+
 
 }
